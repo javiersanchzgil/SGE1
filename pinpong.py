@@ -2,18 +2,21 @@ import asyncio
 
 
 async def pinger(ping, pong):
-    mensaje="Ping"
-    print("Mandando ping")
-    await ping.put(mensaje)
-    await pong.get()
-    print("Pong recibido")
+    while True:
+        mensaje="Ping"
+        print("Mandando ping")
+        await ping.put(mensaje)
+        await pong.get()
+        print("Pong recibido")
 
 async def ponger(ping, pong):
-    await ping.get()
-    print("Ping recibido")
-    mensaje="Pong"
-    print("Mandando pong")
-    await pong.put(mensaje)
+    while True:
+        await ping.get()
+        print("Ping recibido")
+        mensaje="Pong"
+        print("Mandando pong")
+        await pong.put(mensaje)
+        await pong.sleep(30)
 
 async def main():
     ping = asyncio.Queue()
@@ -26,4 +29,5 @@ async def main():
 
 if __name__ ==  '__main__':
     asyncio.run(main())
+
 
