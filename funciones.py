@@ -2,6 +2,9 @@
 def saludo_multiple(principal, *secundarios):
      return (saludo_individual(principal),) + \
           tuple(saludo_individual(n) for n in secundarios)
+# *numeros al colocar el * te hace una lista que coge el numeros de datos que quieras
+def suma(*numeros):
+    return sum(numeros)
 
 def saludo_individual(name):
     saludo = f"Hola, {name}"
@@ -13,6 +16,8 @@ def main():
                               "Mayte",
                               "Maite"):
         print(f"{s}")
+
+        print(suma(1,2,3,4,4,5,4,2,3,4,2,2))
 
 if __name__ == "__main__":
     print("Comienzo programa")
