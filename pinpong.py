@@ -16,16 +16,17 @@ async def ponger(ping, pong):
         mensaje="Pong"
         print("Mandando pong")
         await pong.put(mensaje)
-        await pong.sleep(30)
+        await pong.sleep(1)
 
 async def main():
-    ping = asyncio.Queue()
-    pong = asyncio.Queue()
+    while True:
+        ping = asyncio.Queue()
+        pong = asyncio.Queue()
 
-    t1=asyncio.create_task(pinger(ping, pong))
-    t2=asyncio.create_task(ponger(ping, pong))
+        t1=asyncio.create_task(pinger(ping, pong))
+        t2=asyncio.create_task(ponger(ping, pong))
 
-    await asyncio.sleep(0.1)
+        await asyncio.sleep(10)
 
 if __name__ ==  '__main__':
     asyncio.run(main())
