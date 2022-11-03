@@ -2,6 +2,8 @@ import asyncio
 import random
 
 
+#Creamos las corrutinas ruedas, chasis y motor que esperan entre 0 y 1 segundo y manda por entrada_fabrica a
+#la corrutina fabrica (bucle infinito).
 async def ruedas(entrada_fabrica):
     while True:
         await asyncio.sleep(random.randint(0, 1))
@@ -22,7 +24,8 @@ async def motor(entrada_fabrica):
         print("motor fabricado")
         await entrada_fabrica.put("motor")
 
-
+#En la corrutina fabrica recoge las anteriores en los contadores y cuando tenga uno de cada espera entre 0 y 1 segundo,
+# realiza un coche y lo manda a concesionario por salida_fabrica
 async def fabrica(entrada_fabrica, salida_fabrica):
     vRueda = 0
     vChasis = 0
@@ -40,20 +43,22 @@ async def fabrica(entrada_fabrica, salida_fabrica):
 
         if vRueda > 0 and vChasis > 0 and vMotor > 0:
             await asyncio.sleep(random.randint(0, 1))
-            print("BBBBBBBBBBBBBBBBBBBBBBBB")
+            print("COCHE FABRICADO")
             vRueda -= 1
             vChasis -= 1
             vMotor -= 1
-            await salida_fabrica("coche")
+            await salida_fabrica.put("coche")
 
 
+#En la corrutina concesionario tan solo nos muestra que el coche esta ya en el concesionario
 async def concesionario(salida_fabrica):
     while True:
         obj = await  salida_fabrica.get()
         if obj == "coche":
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            print("COCHE EN CONCESIONARIO")
 
 
+#En la corrutina main creamos las corrutinas
 async def main():
     entrada_fabrica = asyncio.Queue()
     salida_fabrica = asyncio.Queue()
@@ -66,7 +71,7 @@ async def main():
 
     await asyncio.sleep(50)
 
-
+#Corremos el programa
 if __name__ == '__main__':
     print("Empezamos tarea")
     asyncio.run(main())
